@@ -26,7 +26,7 @@ const onFetch = () => {
 };
 
 const addMessage = (messageItem) => {
-  chatList.value.push(messageItem);
+  chatList.value.unshift(messageItem);
 };
 const sendMessage = (message) => {
   chatMessage.value = message;
@@ -75,6 +75,7 @@ const chatList = ref([]);
 
   .chat-item {
     width: 700rpx;
+    transform: rotateX(180deg);
     &.user {
       display: flex;
       justify-content: flex-end;
@@ -92,12 +93,14 @@ const chatList = ref([]);
       box-sizing: border-box;
       height: 100%;
       overflow-y: auto;
+      transform: rotateX(180deg);
       .chat-list {
         width: 100%;
         min-height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: flex-end;
         gap: 20rpx;
       }
     }

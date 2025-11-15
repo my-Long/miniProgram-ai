@@ -1,68 +1,44 @@
 <script setup>
 import { ref } from "vue";
+import { useSystemStore } from "@/store/system";
 
+const { apiUrl } = useSystemStore();
 const chatMessage = ref("");
-const chatReply = ref("");
 
-const sendMessage = () => {
-  console.log(chatMessage.value);
+const onFetch = () => {
+  console.log(apiUrl);
+  uni.request({
+    url: `${apiUrl}/chat`,
+    method: "POST",
+    data: {
+      message: chatMessage.value,
+    },
+    success: (res) => {
+      const result = res.data;
+      const { data } = result;
+      console.log("success", data);
+      addMessage(data);
+    },
+    complete: () => {
+      console.log("complete");
+    },
+  });
 };
 
-const chatList = ref([
-  {
+const addMessage = (messageItem) => {
+  chatList.value.push(messageItem);
+};
+const sendMessage = (message) => {
+  chatMessage.value = message;
+  const obj = {
     role: "user",
-    delta: "你好啊",
-  },
-  {
-    role: "ai",
-    delta: "你好，有什么可以帮你的吗？",
-  },
-  {
-    role: "user",
-    delta: "我想知道关于AI的知识我想知道关于AI的知识我想知道关于AI的知识",
-  },
-  {
-    role: "ai",
-    delta:
-      "AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。",
-  },
-  {
-    role: "user",
-    delta: "我想知道关于AI的知识",
-  },
-  {
-    role: "ai",
-    delta:
-      "AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。  AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。",
-  },
-  {
-    role: "user",
-    delta: "我想知道关于AI的知识",
-  },
-  {
-    role: "ai",
-    delta:
-      "AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。  AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。",
-  },
-  {
-    role: "user",
-    delta: "我想知道关于AI的知识",
-  },
-  {
-    role: "ai",
-    delta:
-      "AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。  AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。",
-  },
-  {
-    role: "user",
-    delta: "我想知道关于AI的知识",
-  },
-  {
-    role: "ai",
-    delta:
-      "AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。  AI是一种人工智能技术，它可以模拟人类的思维过程，从而实现自主决策和行动。",
-  },
-]);
+    delta: message,
+  };
+  addMessage(obj);
+  onFetch();
+};
+
+const chatList = ref([]);
 </script>
 
 <template>
@@ -83,6 +59,7 @@ const chatList = ref([
         </div>
       </scroll-view>
     </view>
+    <ai-keyboard @send="sendMessage" />
   </view>
 </template>
 

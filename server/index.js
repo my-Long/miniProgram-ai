@@ -36,8 +36,9 @@ app.post("/api/chat", (req, res) => {
       code: 200,
       message: "成功",
       data: {
-        reply: `你说的是："${message}"，这是服务器的回复`,
+        delta: `你说的是："${message}"，这是服务器的回复`,
         timestamp: Date.now(),
+        role: "ai",
         userId: userId || "guest",
       },
     });

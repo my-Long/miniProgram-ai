@@ -20,5 +20,11 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "ai-(.*)": "@/components/ai-$1/index.vue"
+    }
+  },
   "uniIdRouter": {}
 }

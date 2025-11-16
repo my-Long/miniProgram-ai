@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-15 17:07:58
+ * @LastEditTime: 2025-11-16 15:39:08
  * @FilePath: /ai-demo/components/ai-keyboard/index.vue
  * @Description: 键盘
 -->
@@ -25,7 +25,12 @@ const sendMessage = () => {
 <template>
   <div class="ai-keyboard">
     <div class="ai-keyboard__input">
-      <input type="text" placeholder="请输入内容" v-model="inputValue" />
+      <input
+        type="text"
+        placeholder="请输入内容"
+        v-model="inputValue"
+        @confirm="sendMessage"
+      />
       <div class="ai-keyboard__input-send" @click="sendMessage">Send</div>
     </div>
   </div>

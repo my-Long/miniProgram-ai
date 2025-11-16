@@ -1,33 +1,77 @@
 <script setup>
-import { ref } from "vue";
+import { ref, reactive, onBeforeUnmount, onMounted } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
 import { useSystemStore } from "@/store/system";
+import { arrayBufferToString, ChunkProcessor } from "@/utils";
 
 const { apiUrl } = useSystemStore();
 const chatMessage = ref("");
+const currentAIMessageIndex = ref(-1); // 记录当前正在接收的 AI 消息索引
+
+const chatList = ref([]); // 聊天列表
+const addMessage = (messageItem) => {
+  chatList.value.unshift(messageItem);
+};
+
+const onHandleChunk = (chunk) => {
+  const { delta, role = "ai" } = chunk;
+  if (typeof delta === "string" && !delta?.trim()) return;
+  const last = chatList.value[0];
+  if (last && last.role === role) {
+    last.delta += delta;
+  } else {
+    chatList.value.unshift({
+      delta,
+      role,
+    });
+  }
+};
+
+const processor = ref(new ChunkProcessor(onHandleChunk));
 
 const onFetch = () => {
-  console.log(apiUrl);
-  uni.request({
+  console.log("开始请求，API地址:", apiUrl);
+
+  // 先创建一个空的 AI 消息占位
+  const aiMessage = {
+    role: "ai",
+    delta: "",
+    timestamp: Date.now(),
+  };
+  addMessage(aiMessage);
+  currentAIMessageIndex.value = 0; // 最新消息在数组开头
+
+  const requestTask = wx.request({
     url: `${apiUrl}/chat`,
     method: "POST",
+    enableChunked: true, // 启用分块传输
     data: {
       message: chatMessage.value,
     },
     success: (res) => {
-      const result = res.data;
-      const { data } = result;
-      console.log("success", data);
-      addMessage(data);
+      console.log("✅ 请求完成", res);
+    },
+    fail: (err) => {
+      console.error("❌ 请求失败", err);
     },
     complete: () => {
-      console.log("complete");
+      console.log("⭕ 请求结束");
     },
   });
+
+  // 监听数据返回
+  if (requestTask.onChunkReceived) {
+    requestTask.onChunkReceived(async (res) => {
+      try {
+        const text = await arrayBufferToString(res.data);
+        await processor.value.enqueue(text);
+      } catch (error) {
+        console.error("❌ 解析失败", error);
+      }
+    });
+  }
 };
 
-const addMessage = (messageItem) => {
-  chatList.value.unshift(messageItem);
-};
 const sendMessage = (message) => {
   chatMessage.value = message;
   const obj = {
@@ -37,8 +81,6 @@ const sendMessage = (message) => {
   addMessage(obj);
   onFetch();
 };
-
-const chatList = ref([]);
 </script>
 
 <template>

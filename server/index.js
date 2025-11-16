@@ -20,6 +20,15 @@ app.use((req, res, next) => {
 
 // AI 聊天接口示例
 app.post("/api/chat", (req, res) => {
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader("Transfer-Encoding", "chunked");
+
+  const chunks = [
+    '{"role": "ai", "delta": "你好，"}',
+    '{"role": "ai", "delta": "这是模拟的"}',
+    '{"role": "ai", "delta": "流式返回"}',
+    '{"role": "ai", "delta": "数据。"}',
+  ];
   const { message, userId } = req.body;
 
   if (!message) {
@@ -30,35 +39,18 @@ app.post("/api/chat", (req, res) => {
     });
   }
 
-  // 这里可以接入真实的 AI 服务，现在模拟返回
-  setTimeout(() => {
-    res.json({
-      code: 200,
-      message: "成功",
-      data: {
-        delta: `你说的是："${message}"，这是服务器的回复`,
-        timestamp: Date.now(),
-        role: "ai",
-        userId: userId || "guest",
-      },
-    });
+  let i = 0;
+  const timer = setInterval(() => {
+    if (i >= chunks.length) {
+      // res.write("EOF"); // 自己约定的结束标记
+      res.end();
+      clearInterval(timer);
+      return;
+    }
+
+    res.write(chunks[i]); // 单次发送一段
+    i++;
   }, 500);
-});
-
-// 获取用户信息接口示例
-app.get("/api/user/:id", (req, res) => {
-  const userId = req.params.id;
-
-  res.json({
-    code: 200,
-    message: "成功",
-    data: {
-      id: userId,
-      name: `用户${userId}`,
-      avatar: "https://via.placeholder.com/150",
-      createTime: Date.now(),
-    },
-  });
 });
 
 // 404 处理

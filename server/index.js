@@ -23,7 +23,53 @@ app.post("/api/chat", (req, res) => {
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Transfer-Encoding", "chunked");
 
-  const chunks = [
+  const chunks1 = [
+    '{"role": "ai", "delta": "庆历四年春，"}',
+    '{"role": "ai", "delta": "滕子京谪守巴陵郡。"}',
+    '{"role": "ai", "delta": "越明年，政通人和，百废具兴。"}',
+    '{"role": "ai", "delta": "乃重修岳阳楼，增其旧制，"}',
+    '{"role": "ai", "delta": "刻唐贤今人诗赋于其上，"}',
+    '{"role": "ai", "delta": "属予作文以记之。"}',
+
+    '{"role": "ai", "delta": "大江东去，"}',
+    '{"role": "ai", "delta": "浩浩汤汤，"}',
+    '{"role": "ai", "delta": "横无际涯；"}',
+    '{"role": "ai", "delta": "朝晖夕阴，"}',
+    '{"role": "ai", "delta": "气象万千。"}',
+
+    '{"role": "ai", "delta": "此则岳阳楼之大观也，"}',
+    '{"role": "ai", "delta": "前人之述备矣。"}',
+
+    '{"role": "ai", "delta": "然则北通巫峡，"}',
+    '{"role": "ai", "delta": "南极潇湘，"}',
+    '{"role": "ai", "delta": "迁客骚人，多会于此。"}',
+
+    '{"role": "ai", "delta": "览物之情，"}',
+    '{"role": "ai", "delta": "得无异乎？"}',
+  ];
+  const chunks2 = [
+    '{"role": "ai", "delta": "豫章故郡，"}',
+    '{"role": "ai", "delta": "洪都新府。"}',
+    '{"role": "ai", "delta": "星分翼轸，"}',
+    '{"role": "ai", "delta": "地接衡庐。"}',
+
+    '{"role": "ai", "delta": "襟三江而带五湖，"}',
+    '{"role": "ai", "delta": "控蛮荆而引瓯越。"}',
+
+    '{"role": "ai", "delta": "物华天宝，"}',
+    '{"role": "ai", "delta": "龙光射牛斗之墟；"}',
+
+    '{"role": "ai", "delta": "人杰地灵，"}',
+    '{"role": "ai", "delta": "徐孺下陈蕃之榻。"}',
+
+    '{"role": "ai", "delta": "雄州雾列，"}',
+    '{"role": "ai", "delta": "俊采星驰。"}',
+
+    '{"role": "ai", "delta": "台隍枕夷夏之交，"}',
+    '{"role": "ai", "delta": "宾主尽东南之美。"}',
+  ];
+
+  let chunks = [
     '{"role": "ai", "delta": "你好，"}',
     '{"role": "ai", "delta": "这是模拟的"}',
     '{"role": "ai", "delta": "流式返回"}',
@@ -38,6 +84,11 @@ app.post("/api/chat", (req, res) => {
       data: null,
     });
   }
+  if (message === "岳阳楼记") {
+    chunks = chunks1;
+  } else if (message === "滕王阁序") {
+    chunks = chunks2;
+  }
 
   let i = 0;
   const timer = setInterval(() => {
@@ -50,7 +101,7 @@ app.post("/api/chat", (req, res) => {
 
     res.write(chunks[i]); // 单次发送一段
     i++;
-  }, 300);
+  }, 100);
 });
 
 // 404 处理

@@ -50,7 +50,7 @@ app.post("/api/chat", (req, res) => {
 
     res.write(chunks[i]); // 单次发送一段
     i++;
-  }, 500);
+  }, 300);
 });
 
 // 404 处理

@@ -6,7 +6,7 @@ import { arrayBufferToString, ChunkProcessor } from "@/utils";
 
 const { apiUrl } = useSystemStore();
 const chatMessage = ref("");
-const currentAIMessageIndex = ref(-1); // 记录当前正在接收的 AI 消息索引
+const currentReceivingId = ref(null); // 记录当前正在接收的 AI 消息 ID
 
 const chatList = ref([]); // 聊天列表
 const addMessage = (messageItem) => {
@@ -14,7 +14,7 @@ const addMessage = (messageItem) => {
 };
 
 const onHandleChunk = (chunk) => {
-  const { delta, role = "ai" } = chunk;
+  const { delta, role = "ai" } = chunk; // 设置默认 role 为 "ai"
   if (typeof delta === "string" && !delta?.trim()) return;
   const last = chatList.value[0];
   if (last && last.role === role) {
@@ -25,6 +25,7 @@ const onHandleChunk = (chunk) => {
       role,
     });
   }
+  console.log(chatList.value);
 };
 
 const processor = ref(new ChunkProcessor(onHandleChunk));
@@ -32,14 +33,18 @@ const processor = ref(new ChunkProcessor(onHandleChunk));
 const onFetch = () => {
   console.log("开始请求，API地址:", apiUrl);
 
+  // 创建一个唯一 ID 用于标识这次对话
+  const messageId = Date.now();
+  currentReceivingId.value = messageId;
+
   // 先创建一个空的 AI 消息占位
   const aiMessage = {
+    id: messageId,
     role: "ai",
     delta: "",
     timestamp: Date.now(),
   };
   addMessage(aiMessage);
-  currentAIMessageIndex.value = 0; // 最新消息在数组开头
 
   const requestTask = wx.request({
     url: `${apiUrl}/chat`,
@@ -56,6 +61,8 @@ const onFetch = () => {
     },
     complete: () => {
       console.log("⭕ 请求结束");
+      // 请求结束后，清除当前接收状态
+      currentReceivingId.value = null;
     },
   });
 
@@ -75,6 +82,7 @@ const onFetch = () => {
 const sendMessage = (message) => {
   chatMessage.value = message;
   const obj = {
+    id: Date.now(),
     role: "user",
     delta: message,
   };
@@ -91,12 +99,16 @@ const sendMessage = (message) => {
         <div class="chat-list">
           <div
             class="chat-item"
-            v-for="item in chatList"
+            v-for="(item, index) in chatList"
             :key="item.id"
             :class="{ user: item.role === 'user', ai: item.role === 'sys' }"
           >
             <ai-user-text v-if="item.role === 'user'" :text="item.delta" />
-            <ai-sys-text v-if="item.role === 'ai'" :text="item.delta" />
+            <ai-sys-text
+              v-if="item.role === 'ai'"
+              :text="item.delta"
+              :is-receiving="item.id === currentReceivingId"
+            />
           </div>
         </div>
       </scroll-view>

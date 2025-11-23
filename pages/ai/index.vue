@@ -14,7 +14,7 @@ const chatList = ref([]); // 聊天列表
 // 分页相关状态
 const pagination = ref({
   page: 1,
-  pageSize: 5,
+  pageSize: 6,
   total: 0,
   hasMore: false,
 });
@@ -36,13 +36,11 @@ const onHandleChunk = (chunk) => {
       role,
     });
   }
-  console.log(chatList.value);
 };
 
 const processor = ref(new ChunkProcessor(onHandleChunk));
 
 const onFetch = () => {
-  console.log("开始请求，API地址:", apiUrl);
 
   // 创建一个唯一 ID 用于标识这次对话
   const messageId = Date.now();
@@ -53,7 +51,6 @@ const onFetch = () => {
     id: messageId,
     role: "ai",
     delta: "",
-    timestamp: Date.now(),
   };
   addMessage(aiMessage);
 
@@ -155,8 +152,7 @@ const onScrollToLower = () => {
   console.log("触发上拉加载");
   getMessageList(true);
 };
-// 页面加载时恢复聊天记录
-onMounted(() => {
+onLoad(() => {
   getMessageList();
 });
 </script>
@@ -172,7 +168,6 @@ onMounted(() => {
         @scrolltolower="onScrollToLower"
       >
         <div class="chat-list">
-          <!-- 聊天消息列表 -->
           <div
             class="chat-item"
             v-for="(item, index) in chatList"

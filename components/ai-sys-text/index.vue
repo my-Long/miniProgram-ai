@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-16 16:57:45
+ * @LastEditTime: 2025-11-23 19:05:15
  * @FilePath: /ai-demo/components/ai-sys-text/index.vue
  * @Description: 系统文本
 -->
@@ -64,7 +64,6 @@ watch(
 watch(
   () => props.isReceiving,
   (newVal, oldVal) => {
-    console.log("isReceiving 变化:", oldVal, "->", newVal);
     if (!newVal && oldVal) {
       // 从接收中变成接收完成，继续保持打字效果直到完成
       needTypingEffect.value = true;

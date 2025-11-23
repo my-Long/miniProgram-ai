@@ -69,6 +69,34 @@ app.post("/api/chat", (req, res) => {
     '{"role": "ai", "delta": "锦鳞游泳；"}',
     '{"role": "ai", "delta": "岸芷汀兰，"}',
     '{"role": "ai", "delta": "郁郁青青。"}',
+    '{"role": "ai", "delta": "而或长烟一空,"}',
+    '{"role": "ai", "delta": "皓月千里,"}',
+    '{"role": "ai", "delta": "浮光跃金,"}',
+    '{"role": "ai", "delta": "静影沉璧,"}',
+    '{"role": "ai", "delta": "渔歌互答,"}',
+    '{"role": "ai", "delta": "此乐何极!"}',
+    '{"role": "ai", "delta": "登斯楼也,"}',
+    '{"role": "ai", "delta": "则有心旷神怡,"}',
+    '{"role": "ai", "delta": "宠辱偕忘,"}',
+    '{"role": "ai", "delta": "把酒临风,"}',
+    '{"role": "ai", "delta": "其喜洋洋者矣。"}',
+    '{"role": "ai", "delta": "嗟夫！"}',
+    '{"role": "ai", "delta": "予尝求古仁人之心，"}',
+    '{"role": "ai", "delta": "或异二者之为，"}',
+    '{"role": "ai", "delta": "何哉？"}',
+    '{"role": "ai", "delta": "不以物喜，"}',
+    '{"role": "ai", "delta": "不以己悲，"}',
+    '{"role": "ai", "delta": "居庙堂之高则忧其民；"}',
+    '{"role": "ai", "delta": "处江湖之远则忧其君。"}',
+    '{"role": "ai", "delta": "是进亦忧，"}',
+    '{"role": "ai", "delta": "退亦忧。"}',
+    '{"role": "ai", "delta": "然则何时而乐耶？"}',
+    '{"role": "ai", "delta": "其必曰“先天下之忧而忧，"}',
+    '{"role": "ai", "delta": "后天下之乐而乐”乎！"}',
+    '{"role": "ai", "delta": "噫！"}',
+    '{"role": "ai", "delta": "微斯人，"}',
+    '{"role": "ai", "delta": "吾谁与归？"}',
+    '{"role": "ai", "delta": "时六年九月十五日。"}',
   ];
   const chunks2 = [
     '{"role": "ai", "delta": "豫章故郡，"}',
@@ -105,6 +133,34 @@ app.post("/api/chat", (req, res) => {
     '{"role": "ai", "delta": "童子何知，"}',
     '{"role": "ai", "delta": "躬逢胜饯。"}',
   ];
+  const chunks3 = [
+    '{"role": "ai", "delta": "君不见黄河之水天上来，"}',
+    '{"role": "ai", "delta": "奔流到海不复回。"}',
+    '{"role": "ai", "delta": "君不见高堂明镜悲白发，"}',
+    '{"role": "ai", "delta": "朝如青丝暮成雪。"}',
+    '{"role": "ai", "delta": "人生得意须尽欢，"}',
+    '{"role": "ai", "delta": "莫使金樽空对月。"}',
+    '{"role": "ai", "delta": "天生我材必有用，"}',
+    '{"role": "ai", "delta": "千金散尽还复来。"}',
+    '{"role": "ai", "delta": "烹羊宰牛且为乐，"}',
+    '{"role": "ai", "delta": "会须一饮三百杯。"}',
+    '{"role": "ai", "delta": "岑夫子，丹丘生，"}',
+    '{"role": "ai", "delta": "将进酒，君莫停。"}',
+    '{"role": "ai", "delta": "与君歌一曲，"}',
+    '{"role": "ai", "delta": "请君为我倾耳听。"}',
+    '{"role": "ai", "delta": "钟鼓馔玉不足贵，"}',
+    '{"role": "ai", "delta": "但愿长醉不愿醒。"}',
+    '{"role": "ai", "delta": "古来圣贤皆寂寞，"}',
+    '{"role": "ai", "delta": "惟有饮者留其名。"}',
+    '{"role": "ai", "delta": "陈王昔时宴平乐，"}',
+    '{"role": "ai", "delta": "斗酒十千恣欢谑。"}',
+    '{"role": "ai", "delta": "主人何为言少钱，"}',
+    '{"role": "ai", "delta": "径须沽取对君酌。"}',
+    '{"role": "ai", "delta": "五花马，"}',
+    '{"role": "ai", "delta": "千金裘，"}',
+    '{"role": "ai", "delta": "呼儿将出换美酒，"}',
+    '{"role": "ai", "delta": "与尔同销万古愁。"}',
+  ];
 
   let chunks = [
     '{"role": "ai", "delta": "你好，"}',
@@ -114,6 +170,8 @@ app.post("/api/chat", (req, res) => {
   ];
   const { message, userId } = req.body;
 
+  console.log("message", message);
+
   if (!message) {
     return res.json({
       code: 400,
@@ -121,10 +179,12 @@ app.post("/api/chat", (req, res) => {
       data: null,
     });
   }
-  if (message === "岳阳楼记") {
-    chunks = chunks1;
-  } else if (message === "滕王阁序") {
-    chunks = chunks2;
+  if (message.includes("岳阳楼记")) {
+    chunks = [...chunks1];
+  } else if (message.includes("滕王阁序")) {
+    chunks = [...chunks2];
+  } else if (message.includes("将进酒")) {
+    chunks = [...chunks3];
   }
 
   let i = 0;

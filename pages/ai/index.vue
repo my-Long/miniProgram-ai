@@ -1,8 +1,9 @@
 <script setup>
-import { ref, reactive, onBeforeUnmount, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { useSystemStore } from "@/store/system";
 import { arrayBufferToString, ChunkProcessor } from "@/utils";
+import { saveMessage, getMessage } from "./mockApi";
 
 const { apiUrl } = useSystemStore();
 const chatMessage = ref("");
@@ -64,6 +65,7 @@ const onFetch = () => {
       // 请求结束后，清除当前接收状态
       // 但打字机效果会在组件内部继续完成
       currentReceivingId.value = null;
+      saveMessage("chatMessages", chatList.value);
     },
   });
 
@@ -90,6 +92,18 @@ const sendMessage = (message) => {
   addMessage(obj);
   onFetch();
 };
+
+// 页面加载时恢复聊天记录
+onMounted(async () => {
+  try {
+    const messages = await getMessage("chatMessages");
+    if (messages && messages.length > 0) {
+      chatList.value = messages;
+      console.log(messages);
+      console.log("已恢复聊天记录:", messages.length, "条");
+    }
+  } catch (error) {}
+});
 </script>
 
 <template>
@@ -125,12 +139,7 @@ const sendMessage = (message) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    #f07e88 0%,
-    #d6ebfb 61.76%,
-    #fff 100%
-  );
+  background: linear-gradient(180deg, #f07e88 0%, #d6ebfb 61.76%, #fff 100%);
   padding-bottom: env(safe-area-inset-bottom);
 
   .chat-item {

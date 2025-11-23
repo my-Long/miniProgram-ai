@@ -26,22 +26,61 @@ export const saveMessage = (key = "chatMessages", messages = []) => {
 /**
  * @description: 从本地缓存读取消息
  * @param {string} key 缓存的键名，默认为 'chatMessages'
- * @return {Promise<Array>} 返回消息数组
+ * @param {Object} options 分页参数
+ * @param {number} options.page 当前页码，从1开始，默认为1
+ * @param {number} options.pageSize 每页数量，默认为20
+ * @return {Promise<Object>} 返回标准接口格式 {code, data, msg}
  */
-export const getMessage = (key = "chatMessages") => {
+export const getMessage = (key = "chatMessages", options = {}) => {
+  const { page = 1, pageSize = 5 } = options;
+
   return new Promise((resolve, reject) => {
     try {
       uni.getStorage({
         key,
         success: (res) => {
-          resolve(res.data || []);
+          const allMessages = res.data || [];
+          const total = allMessages.length;
+
+          // 计算分页起始索引
+          const startIndex = (page - 1) * pageSize;
+          const endIndex = startIndex + pageSize;
+
+          // 获取当前页的数据
+          const list = allMessages.slice(startIndex, endIndex);
+
+          resolve({
+            code: 200,
+            data: {
+              list,
+              total,
+              hasMore: endIndex < total,
+            },
+            msg: "success",
+          });
         },
         fail: (err) => {
-          resolve([]);
+          resolve({
+            code: 200,
+            data: {
+              list: [],
+              total: 0,
+              hasMore: false,
+            },
+            msg: "success",
+          });
         },
       });
     } catch (error) {
-      resolve([]);
+      resolve({
+        code: 500,
+        data: {
+          list: [],
+          total: 0,
+          hasMore: false,
+        },
+        msg: "获取消息失败",
+      });
     }
   });
 };

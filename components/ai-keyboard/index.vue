@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-23 15:43:04
+ * @LastEditTime: 2025-11-23 16:43:12
  * @FilePath: /ai-demo/components/ai-keyboard/index.vue
  * @Description: 键盘
 -->
@@ -31,7 +31,7 @@ const sendMessage = () => {
         v-model="inputValue"
         @confirm="sendMessage"
       />
-      <div class="ai-keyboard__input-send" @click="sendMessage">Send</div>
+      <div class="ai-keyboard__input-send" @click="sendMessage">↑</div>
     </div>
   </div>
 </template>
@@ -42,19 +42,20 @@ const sendMessage = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 80rpx;
+    height: 90rpx;
     padding: 0 10rpx 0 16rpx;
     background-color: #f8fafb;
     border-radius: 8rpx;
     border: 1px solid #e2dfdf;
     .ai-keyboard__input-send {
-      width: 100rpx;
-      height: 60rpx;
-      background-color: #ff5655;
-      color: #fff;
+      width: 70rpx;
+      height: 70rpx;
+      font-size: 40rpx;
+      color: #333;
       text-align: center;
-      line-height: 60rpx;
-      border-radius: 8rpx;
+      line-height: 80rpx;
+      border-radius: 50%;
+      background-color: #ffe7d9;
     }
   }
 }

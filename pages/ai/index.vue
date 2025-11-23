@@ -10,6 +10,16 @@ const chatMessage = ref("");
 const currentReceivingId = ref(null); // 记录当前正在接收的 AI 消息 ID
 
 const chatList = ref([]); // 聊天列表
+
+// 分页相关状态
+const pagination = ref({
+  page: 1,
+  pageSize: 5,
+  total: 0,
+  hasMore: false,
+});
+const loading = ref(false); // 加载状态
+
 const addMessage = (messageItem) => {
   chatList.value.unshift(messageItem);
 };
@@ -93,16 +103,61 @@ const sendMessage = (message) => {
   onFetch();
 };
 
-// 页面加载时恢复聊天记录
-onMounted(async () => {
+const getMessageList = async (isLoadMore = false) => {
+  // 防止重复加载
+  if (loading.value) return;
+
+  // 如果是加载更多，检查是否还有更多数据
+  if (isLoadMore && !pagination.value.hasMore) {
+    console.log("没有更多数据了");
+    return;
+  }
+
   try {
-    const messages = await getMessage("chatMessages");
-    if (messages && messages.length > 0) {
-      chatList.value = messages;
-      console.log(messages);
-      console.log("已恢复聊天记录:", messages.length, "条");
+    if (isLoadMore) {
+      pagination.value.page += 1;
+    } else {
+      loading.value = true;
+      pagination.value.page = 1;
     }
-  } catch (error) {}
+
+    const result = await getMessage("chatMessages", {
+      page: pagination.value.page,
+      pageSize: pagination.value.pageSize,
+    });
+    console.log("result", result.data);
+
+    if (result.code === 200) {
+      // 更新分页信息
+      pagination.value.total = result.data.total;
+      pagination.value.hasMore = result.data.hasMore;
+
+      if (isLoadMore) {
+        // 加载更多：追加到列表末尾
+        chatList.value.push(...result.data.list);
+        console.log("加载更多成功，当前页:", pagination.value.page);
+      } else {
+        // 初次加载：替换列表
+        chatList.value = result.data.list;
+      }
+    }
+  } catch (error) {
+    // 加载失败时回退页码
+    if (isLoadMore) {
+      pagination.value.page -= 1;
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+
+const onScrollToLower = () => {
+  console.log("触发上拉加载");
+  getMessageList(true);
+};
+// 页面加载时恢复聊天记录
+onMounted(() => {
+  getMessageList();
 });
 </script>
 
@@ -110,8 +165,14 @@ onMounted(async () => {
   <view class="container">
     <ai-navbar title="AI聊天"> </ai-navbar>
     <view class="chat-container">
-      <scroll-view class="chat-content" scroll-y>
+      <scroll-view
+        class="chat-content"
+        scroll-y
+        :lower-threshold="100"
+        @scrolltolower="onScrollToLower"
+      >
         <div class="chat-list">
+          <!-- 聊天消息列表 -->
           <div
             class="chat-item"
             v-for="(item, index) in chatList"
@@ -152,6 +213,18 @@ onMounted(async () => {
     &.ai {
       display: flex;
       justify-content: flex-start;
+    }
+  }
+  .loading-tip {
+    width: 100%;
+    padding: 20rpx 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateX(180deg);
+    .loading-text {
+      font-size: 24rpx;
+      color: #999;
     }
   }
   .chat-container {

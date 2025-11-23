@@ -125,7 +125,12 @@ const sendMessage = (message) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: linear-gradient(180deg, #93ae7a 0%, #fff 26.13%, #d6ebfb 81.76%);
+  background: linear-gradient(
+    180deg,
+    #f07e88 0%,
+    #d6ebfb 61.76%,
+    #fff 100%
+  );
   padding-bottom: env(safe-area-inset-bottom);
 
   .chat-item {

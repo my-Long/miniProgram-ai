@@ -3,7 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
-const PORT = 3000;
+const PORT = 3005;
 
 // 中间件配置
 app.use(cors()); // 允许跨域请求

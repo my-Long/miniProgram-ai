@@ -41,7 +41,6 @@ const onHandleChunk = (chunk) => {
 const processor = ref(new ChunkProcessor(onHandleChunk));
 
 const onFetch = () => {
-
   // 创建一个唯一 ID 用于标识这次对话
   const messageId = Date.now();
   currentReceivingId.value = messageId;
@@ -81,6 +80,7 @@ const onFetch = () => {
     requestTask.onChunkReceived(async (res) => {
       try {
         const text = await arrayBufferToString(res.data);
+        console.log(text);
         await processor.value.enqueue(text);
       } catch (error) {
         console.error("❌ 解析失败", error);

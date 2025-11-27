@@ -1,6 +1,9 @@
 {
-	"dependencies": {
-		"marked": "^17.0.1",
-		"mp-html": "^2.5.1"
-	}
+  "name": "miniprogram-ai",
+  "version": "1.1.0",
+  "description": "AI智能对话小程序",
+  "dependencies": {
+    "marked": "^17.0.1",
+    "mp-html": "^2.5.1"
+  }
 }

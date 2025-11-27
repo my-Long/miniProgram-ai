@@ -207,7 +207,13 @@ onLoad(() => {
   flex-direction: column;
   overflow: hidden;
   padding-bottom: env(safe-area-inset-bottom);
-  background: linear-gradient(-20deg, #41e0d0 0%, #d6cbf6 46%, #fef9b8 100%);
+  background: linear-gradient(
+    20deg,
+    #975ff8 0%,
+    #41e0d0 30%,
+    #d6cbf6 66%,
+    #fef9b8 100%
+  );
   .chat-item {
     width: 700rpx;
     transform: rotateX(180deg);

@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 20:22:06
+ * @LastEditTime: 2025-11-27 20:27:30
  * @FilePath: \miniProgram-ai\components\ai-sys-text\index.vue
  * @Description: 系统文本
 -->
@@ -47,8 +47,6 @@ const typingText = (text) => {
       // 打字完成后，标记不再需要打字效果
       needTypingEffect.value = false;
       isReplying.value = false;
-      // 最终显示原始内容（不需要补全）
-      htmlContent.value = marked(content.value);
     }
   };
   step();

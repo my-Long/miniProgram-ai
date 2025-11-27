@@ -11,6 +11,8 @@ const currentReceivingId = ref(null); // 记录当前正在接收的 AI 消息 I
 
 const chatList = ref([]); // 聊天列表
 
+const isLoading = ref(false);
+
 // 分页相关状态
 const pagination = ref({
   page: 1,
@@ -123,7 +125,6 @@ const getMessageList = async (isLoadMore = false) => {
       page: pagination.value.page,
       pageSize: pagination.value.pageSize,
     });
-    console.log("result", result.data);
 
     if (result.code === 200) {
       // 更新分页信息
@@ -179,6 +180,7 @@ onLoad(() => {
             <ai-user-text v-if="item.role === 'user'" :text="item.delta" />
             <ai-sys-text
               v-if="item.role === 'ai'"
+              v-model:is-loading="isLoading"
               :text="item.delta"
               :is-receiving="item.id === currentReceivingId"
             />
@@ -186,7 +188,7 @@ onLoad(() => {
         </div>
       </scroll-view>
     </view>
-    <ai-keyboard @send="sendMessage" />
+    <ai-keyboard :is-loading="isLoading" @send="sendMessage" />
   </view>
 </template>
 
@@ -198,7 +200,7 @@ onLoad(() => {
   flex-direction: column;
   overflow: hidden;
   padding-bottom: env(safe-area-inset-bottom);
-  background: linear-gradient(-20deg, #61dafb 0%, #d6cbf6 46%, #fc529f 100%);
+  background: linear-gradient(-20deg, #41E0D0 0%, #d6cbf6 46%, #fef9b8 100%);
   .chat-item {
     width: 700rpx;
     transform: rotateX(180deg);

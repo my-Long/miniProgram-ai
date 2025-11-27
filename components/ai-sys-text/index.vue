@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 09:54:51
+ * @LastEditTime: 2025-11-27 10:57:32
  * @FilePath: \miniProgram-ai\components\ai-sys-text\index.vue
  * @Description: 系统文本
 -->
@@ -22,6 +22,8 @@ const props = defineProps({
   },
 });
 
+const isLoading = defineModel("isLoading");
+
 const content = ref("");
 const htmlContent = ref("");
 let timer = null;
@@ -32,6 +34,7 @@ const typingText = (text) => {
   clearTimeout(timer);
   // 继续从当前位置打字
   const step = () => {
+    isLoading.value = true;
     if (typingIndex.value < text.length) {
       content.value = text.slice(0, ++typingIndex.value);
       htmlContent.value = marked(content.value);
@@ -39,6 +42,7 @@ const typingText = (text) => {
     } else {
       // 打字完成后，标记不再需要打字效果
       needTypingEffect.value = false;
+      isLoading.value = false;
     }
   };
   step();
@@ -90,14 +94,16 @@ onBeforeUnmount(() => {
   }
 });
 const style = {
-  h2: "line-height:1.5;color:#000;margin:30rpx 0",
-  h3: "line-height:1.5;color:#000;margin:20rpx 0",
-  h4: "line-height:1.5;color:#000;margin:15rpx 0",
-  h5: "line-height:1.5;color:#000;margin:15rpx 0",
+  h1: "line-height:1.5;color:#FE2BC2;margin:30rpx 0",
+  h2: "line-height:1.5;color:#ff37c6;margin:30rpx 0",
+  h3: "line-height:1.5;color:#ff45ca;margin:20rpx 0",
+  h4: "line-height:1.5;color:#ff54ce;margin:15rpx 0",
+  h5: "line-height:1.5;color:#ff67d4;margin:15rpx 0",
   ul: "padding-top:10rpx; padding-bottom:10rpx",
   ol: "padding-top:10rpx; padding-bottom:10rpx",
-  li: "line-height:1.8;color:#000",
-  p: "line-height:1.8;color:#000",
+  li: "line-height:1.8;color:#333",
+  p: "line-height:1.8;color:#333",
+  strong: "color:#FD4E30;",
   hr: "border: none; border-top: 1px solid #EFEFEF; margin: 15px 0;",
 };
 </script>
@@ -111,6 +117,6 @@ const style = {
 .ai-sys-text {
   width: fit-content;
   padding: 10rpx 15rpx;
-  color: #333;
+  color: #ff67d4;
 }
 </style>

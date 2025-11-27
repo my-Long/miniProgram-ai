@@ -2,15 +2,24 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 10:18:24
+ * @LastEditTime: 2025-11-27 11:02:55
  * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
  * @Description: 键盘
 -->
 <script setup>
 import { ref } from "vue";
+const props = defineProps({
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+});
 const inputValue = ref("");
 const emit = defineEmits(["send"]);
 const sendMessage = () => {
+  if (props.isLoading) {
+    return;
+  }
   if (!inputValue.value.trim()) {
     uni.showToast({
       title: "请输入内容",
@@ -32,7 +41,10 @@ const sendMessage = () => {
         @confirm="sendMessage"
         placeholder-style="color: #79A5BE;"
       />
-      <div class="ai-keyboard__input-send" @click="sendMessage">↑</div>
+      <div class="ai-keyboard__input-send" @click="sendMessage">
+        <text class="iconfont icon-tingzhi" v-if="isLoading"></text>
+        <text class="iconfont icon-send-s" v-else></text>
+      </div>
     </div>
   </div>
 </template>
@@ -47,16 +59,19 @@ const sendMessage = () => {
     padding: 0 10rpx 0 16rpx;
     border-radius: 8rpx;
     border: 1px solid #71d5f9;
-    color: #fff;
+    color: #FF45CA;
     .ai-keyboard__input-send {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 70rpx;
       height: 70rpx;
-      font-size: 40rpx;
-      color: #fff;
-      text-align: center;
-      line-height: 80rpx;
       border-radius: 50%;
       background: linear-gradient(56deg, #61dafb 0%, #d6cbf6 46%, #f2056f 100%);
+      .iconfont{
+        font-size: 48rpx;
+        color: #fff;
+      }
     }
   }
 }

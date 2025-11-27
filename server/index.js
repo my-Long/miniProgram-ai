@@ -163,18 +163,21 @@ app.post("/api/chat", (req, res) => {
     chunks = [...chunks3];
   }
 
-  let i = 0;
-  const timer = setInterval(() => {
-    if (i >= chunks.length) {
-      // res.write("EOF"); // 自己约定的结束标记
-      res.end();
-      clearInterval(timer);
-      return;
-    }
+  // 延迟 1000ms 后才开始发送消息
+  setTimeout(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i >= chunks.length) {
+        // res.write("EOF"); // 自己约定的结束标记
+        res.end();
+        clearInterval(timer);
+        return;
+      }
 
-    res.write(chunks[i]); // 单次发送一段
-    i++;
-  }, 100);
+      res.write(chunks[i]); // 单次发送一段
+      i++;
+    }, 100);
+  }, 1000);
 });
 
 // 404 处理

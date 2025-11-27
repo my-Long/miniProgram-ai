@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 10:57:32
+ * @LastEditTime: 2025-11-27 11:09:17
  * @FilePath: \miniProgram-ai\components\ai-sys-text\index.vue
  * @Description: 系统文本
 -->
@@ -22,7 +22,7 @@ const props = defineProps({
   },
 });
 
-const isLoading = defineModel("isLoading");
+const isReplying = defineModel("isReplying");
 
 const content = ref("");
 const htmlContent = ref("");
@@ -31,10 +31,11 @@ const typingIndex = ref(0);
 const needTypingEffect = ref(false); // 标记是否需要打字效果
 
 const typingText = (text) => {
+  if(!text) return;
   clearTimeout(timer);
   // 继续从当前位置打字
   const step = () => {
-    isLoading.value = true;
+    isReplying.value = true;
     if (typingIndex.value < text.length) {
       content.value = text.slice(0, ++typingIndex.value);
       htmlContent.value = marked(content.value);
@@ -42,7 +43,7 @@ const typingText = (text) => {
     } else {
       // 打字完成后，标记不再需要打字效果
       needTypingEffect.value = false;
-      isLoading.value = false;
+      isReplying.value = false;
     }
   };
   step();

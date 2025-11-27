@@ -11,7 +11,8 @@ const currentReceivingId = ref(null); // 记录当前正在接收的 AI 消息 I
 
 const chatList = ref([]); // 聊天列表
 
-const isLoading = ref(false);
+const isReplying = ref(false); // 是否正在回复(从发送到输出结束)
+const isWaiting = ref(false); // 是否正在等待(从发送到接收消息)
 
 // 分页相关状态
 const pagination = ref({
@@ -80,6 +81,7 @@ const onFetch = () => {
   // 监听数据返回
   if (requestTask.onChunkReceived) {
     requestTask.onChunkReceived(async (res) => {
+      isWaiting.value = false;
       try {
         const text = await arrayBufferToString(res.data);
         await processor.value.enqueue(text);
@@ -93,6 +95,8 @@ const onFetch = () => {
 
 const scrollTop = ref(1);
 const sendMessage = (message) => {
+  isReplying.value = true;
+  isWaiting.value = true;
   chatMessage.value = message;
   const obj = {
     id: Date.now(),
@@ -171,6 +175,7 @@ onLoad(() => {
         @scrolltolower="onScrollToLower"
       >
         <div class="chat-list">
+          <ai-loading v-if="isWaiting"></ai-loading>
           <div
             class="chat-item"
             v-for="(item, index) in chatList"
@@ -180,7 +185,7 @@ onLoad(() => {
             <ai-user-text v-if="item.role === 'user'" :text="item.delta" />
             <ai-sys-text
               v-if="item.role === 'ai'"
-              v-model:is-loading="isLoading"
+              v-model:is-replying="isReplying"
               :text="item.delta"
               :is-receiving="item.id === currentReceivingId"
             />
@@ -188,7 +193,7 @@ onLoad(() => {
         </div>
       </scroll-view>
     </view>
-    <ai-keyboard :is-loading="isLoading" @send="sendMessage" />
+    <ai-keyboard :is-replying="isReplying" @send="sendMessage" />
   </view>
 </template>
 
@@ -200,7 +205,7 @@ onLoad(() => {
   flex-direction: column;
   overflow: hidden;
   padding-bottom: env(safe-area-inset-bottom);
-  background: linear-gradient(-20deg, #41E0D0 0%, #d6cbf6 46%, #fef9b8 100%);
+  background: linear-gradient(-20deg, #41e0d0 0%, #d6cbf6 46%, #fef9b8 100%);
   .chat-item {
     width: 700rpx;
     transform: rotateX(180deg);
@@ -215,10 +220,9 @@ onLoad(() => {
   }
   .loading-tip {
     width: 100%;
-    padding: 20rpx 0;
+    padding: 20rpx;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
     transform: rotateX(180deg);
     .loading-text {
       font-size: 24rpx;

@@ -9,7 +9,7 @@
 <script setup>
 import { ref } from "vue";
 const props = defineProps({
-  isLoading: {
+  isReplying: {
     type: Boolean,
     default: false,
   },
@@ -17,7 +17,7 @@ const props = defineProps({
 const inputValue = ref("");
 const emit = defineEmits(["send"]);
 const sendMessage = () => {
-  if (props.isLoading) {
+  if (props.isReplying) {
     return;
   }
   if (!inputValue.value.trim()) {
@@ -42,7 +42,7 @@ const sendMessage = () => {
         placeholder-style="color: #79A5BE;"
       />
       <div class="ai-keyboard__input-send" @click="sendMessage">
-        <text class="iconfont icon-tingzhi" v-if="isLoading"></text>
+        <text class="iconfont icon-tingzhi" v-if="isReplying"></text>
         <text class="iconfont icon-send-s" v-else></text>
       </div>
     </div>

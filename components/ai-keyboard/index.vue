@@ -59,7 +59,7 @@ const sendMessage = () => {
     padding: 0 10rpx 0 16rpx;
     border-radius: 8rpx;
     border: 1px solid #71d5f9;
-    color: #FF45CA;
+    color: #ff45ca;
     .ai-keyboard__input-send {
       display: flex;
       align-items: center;
@@ -68,7 +68,7 @@ const sendMessage = () => {
       height: 70rpx;
       border-radius: 50%;
       background: linear-gradient(56deg, #61dafb 0%, #d6cbf6 46%, #f2056f 100%);
-      .iconfont{
+      .iconfont {
         font-size: 48rpx;
         color: #fff;
       }

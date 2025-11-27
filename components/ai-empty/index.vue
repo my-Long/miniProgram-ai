@@ -17,7 +17,7 @@
     width: 450rpx;
   }
   .text {
-    font-size: 40rpx;
+    font-size: 60rpx;
     margin-top: 50rpx;
     color: #e467b2;
     font-weight: bold;

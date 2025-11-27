@@ -20,4 +20,5 @@ export default {
 /*每个页面公共css */
 @import "@/styles/base.scss";
 @import "@/styles/iconfont.scss";
+@import "@/styles/font.scss";
 </style>

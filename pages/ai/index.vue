@@ -168,6 +168,7 @@ onLoad(() => {
     <ai-navbar title="AI聊天"> </ai-navbar>
     <view class="chat-container">
       <scroll-view
+        v-if="chatList.length > 0"
         class="chat-content"
         :scroll-top="scrollTop"
         scroll-y
@@ -192,6 +193,7 @@ onLoad(() => {
           </view>
         </view>
       </scroll-view>
+      <ai-empty v-else></ai-empty>
     </view>
     <ai-keyboard :is-replying="isReplying" @send="sendMessage" />
   </view>

@@ -195,8 +195,11 @@ onLoad(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: linear-gradient(180deg, #f07e88 0%, #d6ebfb 61.76%, #fff 100%);
   padding-bottom: env(safe-area-inset-bottom);
+  background: #ffdcfc
+    url(https://dl.dropboxusercontent.com/s/ic905z0dhblfizd/12.jpg) center
+    center no-repeat;
+  background-size: cover;
 
   .chat-item {
     width: 700rpx;

@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 11:09:17
+ * @LastEditTime: 2025-11-27 11:39:01
  * @FilePath: \miniProgram-ai\components\ai-sys-text\index.vue
  * @Description: 系统文本
 -->
@@ -109,9 +109,9 @@ const style = {
 };
 </script>
 <template>
-  <div class="ai-sys-text">
+  <view class="ai-sys-text">
     <mp-html :tag-style="style" :content="htmlContent" />
-  </div>
+  </view>
 </template>
 
 <style lang="scss" scoped>

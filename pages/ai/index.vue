@@ -174,9 +174,9 @@ onLoad(() => {
         :lower-threshold="100"
         @scrolltolower="onScrollToLower"
       >
-        <div class="chat-list">
+        <view class="chat-list">
           <ai-loading v-if="isWaiting"></ai-loading>
-          <div
+          <view
             class="chat-item"
             v-for="(item, index) in chatList"
             :key="item.id"
@@ -189,8 +189,8 @@ onLoad(() => {
               :text="item.delta"
               :is-receiving="item.id === currentReceivingId"
             />
-          </div>
-        </div>
+          </view>
+        </view>
       </scroll-view>
     </view>
     <ai-keyboard :is-replying="isReplying" @send="sendMessage" />

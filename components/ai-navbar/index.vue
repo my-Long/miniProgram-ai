@@ -2,8 +2,8 @@
  * @Author: Lmy
  * @Date: 2025-11-15 15:52:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-15 16:17:04
- * @FilePath: /ai-demo/components/ai-navbar/index.vue
+ * @LastEditTime: 2025-11-27 11:38:53
+ * @FilePath: \miniProgram-ai\components\ai-navbar\index.vue
  * @Description: 自定义头部
 -->
 <script setup>
@@ -39,18 +39,18 @@ const props = defineProps({
       zIndex: zIndex,
     }"
   >
-    <div
+    <view
       class="ai-nanbar__wrapper"
       :style="{ height: capsuleInfoHeight + 'px' }"
     >
-      <div class="ai-nanbar__left">
-        <div class="ai-nanbar__left-item">
+      <view class="ai-nanbar__left">
+        <view class="ai-nanbar__left-item">
           <slot name="navbar-left">
             <text>{{ title }}</text>
           </slot>
-        </div>
-      </div>
-    </div>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 

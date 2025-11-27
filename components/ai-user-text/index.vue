@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:23:36
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 09:57:52
+ * @LastEditTime: 2025-11-27 11:39:08
  * @FilePath: \miniProgram-ai\components\ai-user-text\index.vue
  * @Description: 用户文本
 -->
@@ -15,7 +15,7 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div class="ai-user-text">{{ text }}</div>
+  <view class="ai-user-text">{{ text }}</view>
 </template>
 
 <style lang="scss" scoped>

@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 11:02:55
+ * @LastEditTime: 2025-11-27 11:38:44
  * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
  * @Description: 键盘
 -->
@@ -32,8 +32,8 @@ const sendMessage = () => {
 };
 </script>
 <template>
-  <div class="ai-keyboard">
-    <div class="ai-keyboard__input">
+  <view class="ai-keyboard">
+    <view class="ai-keyboard__input">
       <input
         type="text"
         placeholder="请输入内容"
@@ -41,12 +41,12 @@ const sendMessage = () => {
         @confirm="sendMessage"
         placeholder-style="color: #79A5BE;"
       />
-      <div class="ai-keyboard__input-send" @click="sendMessage">
+      <view class="ai-keyboard__input-send" @click="sendMessage">
         <text class="iconfont icon-tingzhi" v-if="isReplying"></text>
         <text class="iconfont icon-send-s" v-else></text>
-      </div>
-    </div>
-  </div>
+      </view>
+    </view>
+  </view>
 </template>
 <style lang="scss" scoped>
 .ai-keyboard {

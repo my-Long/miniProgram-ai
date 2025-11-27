@@ -80,8 +80,8 @@ const onFetch = () => {
     requestTask.onChunkReceived(async (res) => {
       try {
         const text = await arrayBufferToString(res.data);
-        console.log(text);
         await processor.value.enqueue(text);
+        scrollTop.value = 0;
       } catch (error) {
         console.error("❌ 解析失败", error);
       }
@@ -89,6 +89,7 @@ const onFetch = () => {
   }
 };
 
+const scrollTop = ref(1);
 const sendMessage = (message) => {
   chatMessage.value = message;
   const obj = {
@@ -163,6 +164,7 @@ onLoad(() => {
     <view class="chat-container">
       <scroll-view
         class="chat-content"
+        :scroll-top="scrollTop"
         scroll-y
         :lower-threshold="100"
         @scrolltolower="onScrollToLower"
@@ -196,11 +198,7 @@ onLoad(() => {
   flex-direction: column;
   overflow: hidden;
   padding-bottom: env(safe-area-inset-bottom);
-  background: #ffdcfc
-    url(https://dl.dropboxusercontent.com/s/ic905z0dhblfizd/12.jpg) center
-    center no-repeat;
-  background-size: cover;
-
+  background: linear-gradient(-20deg, #61dafb 0%, #d6cbf6 46%, #fc529f 100%);
   .chat-item {
     width: 700rpx;
     transform: rotateX(180deg);

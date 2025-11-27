@@ -24,12 +24,12 @@ app.post("/api/chat", (req, res) => {
   res.setHeader("Transfer-Encoding", "chunked");
 
   const chunks1 = [
-    '{"role": "ai", "delta": "# 岳阳楼记\\n\\n"}',
+    '{"role": "ai", "delta": "## 岳阳楼记\\n\\n"}',
     '{"role": "ai", "delta": "**庆历四年春**，滕子京谪守巴陵郡。"}',
     '{"role": "ai", "delta": "越明年，政通人和，百废具兴。"}',
     '{"role": "ai", "delta": "乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。\\n\\n"}',
 
-    '{"role": "ai", "delta": "## 洞庭湖之景\\n\\n"}',
+    '{"role": "ai", "delta": "### 洞庭湖之景\\n\\n"}',
     '{"role": "ai", "delta": "大江东去，浩浩汤汤，横无际涯；"}',
     '{"role": "ai", "delta": "朝晖夕阴，气象万千。"}',
     '{"role": "ai", "delta": "此则岳阳楼之大观也，前人之述备矣。\\n\\n"}',
@@ -70,22 +70,22 @@ app.post("/api/chat", (req, res) => {
     '{"role": "ai", "delta": "*时六年九月十五日*"}',
   ];
   const chunks2 = [
-    '{"role": "ai", "delta": "# 滕王阁序\\n\\n"}',
-    '{"role": "ai", "delta": "## 地理位置\\n\\n"}',
+    '{"role": "ai", "delta": "## 滕王阁序\\n\\n"}',
+    '{"role": "ai", "delta": "### 地理位置\\n\\n"}',
     '{"role": "ai", "delta": "**豫章故郡，洪都新府**。"}',
     '{"role": "ai", "delta": "星分翼轸，地接衡庐。\\n\\n"}',
 
     '{"role": "ai", "delta": "襟三江而带五湖，"}',
     '{"role": "ai", "delta": "控蛮荆而引瓯越。\\n\\n"}',
 
-    '{"role": "ai", "delta": "## 物华人杰\\n\\n"}',
+    '{"role": "ai", "delta": "### 物华人杰\\n\\n"}',
     '{"role": "ai", "delta": "- **物华天宝**，龙光射牛斗之墟\\n"}',
     '{"role": "ai", "delta": "- **人杰地灵**，徐孺下陈蕃之榻\\n\\n"}',
 
     '{"role": "ai", "delta": "雄州雾列，俊采星驰。"}',
     '{"role": "ai", "delta": "台隍枕夷夏之交，宾主尽东南之美。\\n\\n"}',
 
-    '{"role": "ai", "delta": "## 宾客盛会\\n\\n"}',
+    '{"role": "ai", "delta": "### 宾客盛会\\n\\n"}',
     '{"role": "ai", "delta": "都督阎公之雅望，宇文新州之懿范，"}',
     '{"role": "ai", "delta": "十旬休假，**胜友如云**；"}',
     '{"role": "ai", "delta": "千里逢迎，**高朋满座**。\\n\\n"}',
@@ -95,19 +95,19 @@ app.post("/api/chat", (req, res) => {
     '{"role": "ai", "delta": "童子何知，躬逢胜饯。"}',
   ];
   const chunks3 = [
-    '{"role": "ai", "delta": "# 将进酒\\n\\n"}',
+    '{"role": "ai", "delta": "## 将进酒\\n\\n"}',
     '{"role": "ai", "delta": "> 作者：李白\\n\\n"}',
-    '{"role": "ai", "delta": "## 人生苦短\\n\\n"}',
+    '{"role": "ai", "delta": "### 人生苦短\\n\\n"}',
     '{"role": "ai", "delta": "君不见**黄河之水天上来**，奔流到海不复回。"}',
     '{"role": "ai", "delta": "君不见**高堂明镜悲白发**，朝如青丝暮成雪。\\n\\n"}',
 
-    '{"role": "ai", "delta": "## 及时行乐\\n\\n"}',
+    '{"role": "ai", "delta": "### 及时行乐\\n\\n"}',
     '{"role": "ai", "delta": "人生得意须尽欢，莫使金樽空对月。"}',
     '{"role": "ai", "delta": "**天生我材必有用，千金散尽还复来。**\\n\\n"}',
 
     '{"role": "ai", "delta": "烹羊宰牛且为乐，会须一饮三百杯。\\n\\n"}',
 
-    '{"role": "ai", "delta": "## 劝君饮酒\\n\\n"}',
+    '{"role": "ai", "delta": "### 劝君饮酒\\n\\n"}',
     '{"role": "ai", "delta": "岑夫子，丹丘生，**将进酒，君莫停**。"}',
     '{"role": "ai", "delta": "与君歌一曲，请君为我倾耳听。\\n\\n"}',
 
@@ -118,7 +118,7 @@ app.post("/api/chat", (req, res) => {
     '{"role": "ai", "delta": "陈王昔时宴平乐，斗酒十千恣欢谑。"}',
     '{"role": "ai", "delta": "主人何为言少钱，径须沽取对君酌。\\n\\n"}',
 
-    '{"role": "ai", "delta": "## 豪情万丈\\n\\n"}',
+    '{"role": "ai", "delta": "### 豪情万丈\\n\\n"}',
     '{"role": "ai", "delta": "- 五花马\\n"}',
     '{"role": "ai", "delta": "- 千金裘\\n\\n"}',
     '{"role": "ai", "delta": "**呼儿将出换美酒，与尔同销万古愁！**"}',

@@ -12,6 +12,13 @@
         "navigationBarTitleText": "AI",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/historyAI/index",
+      "style": {
+        "navigationBarTitleText": "历史 AI",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {

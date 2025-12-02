@@ -1,8 +1,9 @@
 <script setup>
-import { ref, useSlots } from "vue";
+import { ref, reactive, useSlots } from "vue";
 import { useSystemStore } from "@/store/system";
 import { arrayBufferToString, ChunkProcessor } from "@/utils";
 import { saveMessage, getMessage } from "@/api/mockApi";
+import { watch } from "fs";
 
 const { apiUrl } = useSystemStore();
 
@@ -49,6 +50,7 @@ const onHandleChunk = (chunk) => {
 
 const processor = ref(new ChunkProcessor(onHandleChunk));
 
+let requestTask = reactive(null);
 const onFetch = () => {
   // 创建一个唯一 ID 用于标识这次对话
   const messageId = Date.now();
@@ -62,7 +64,7 @@ const onFetch = () => {
   };
   addMessage(aiMessage);
 
-  const requestTask = wx.request({
+  requestTask = wx.request({
     url: `${apiUrl}/chat/stream`,
     method: "POST",
     enableChunked: true, // 启用分块传输
@@ -80,7 +82,6 @@ const onFetch = () => {
       // 请求结束后，清除当前接收状态
       // 但打字机效果会在组件内部继续完成
       currentReceivingId.value = null;
-      saveMessage(chatList.value[0]);
     },
   });
 
@@ -142,11 +143,11 @@ const getMessageList = async (isLoadMore = false) => {
       // 更新分页信息
       pagination.value.total = result.data.total;
       pagination.value.hasMore = result.data.hasMore;
-      const list = result.data.list.reverse();
+      const list = result.data.list;
 
       if (isLoadMore) {
         // 加载更多：追加到列表末尾
-        chatList.value.push(...list);
+        chatList.value.unshift(...list);
         console.log("加载更多成功，当前页:", pagination.value.page);
       } else {
         // 初次加载：替换列表
@@ -161,6 +162,17 @@ const getMessageList = async (isLoadMore = false) => {
   } finally {
     loading.value = false;
   }
+};
+
+const isStop = ref(false);
+const onStop = () => {
+  isStop.value = true;
+  requestTask.abort();
+};
+const onStopSuccess = (text) => {
+  const messages = { role: "assistant", content: text };
+  console.log(messages);
+  saveMessage(messages);
 };
 
 const onScrollToLower = () => {
@@ -209,14 +221,16 @@ defineExpose({
               v-if="item.role === 'assistant'"
               v-model:is-replying="isReplying"
               :text="item.content"
+              :is-stop="isStop"
               :is-receiving="item.id === currentReceivingId"
+              @stopSuccess="onStopSuccess"
             />
           </view>
         </view>
       </scroll-view>
       <ai-empty v-else></ai-empty>
     </view>
-    <ai-keyboard :is-replying="isReplying" @send="sendMessage" />
+    <ai-keyboard :is-replying="isReplying" @send="sendMessage" @stop="onStop" />
   </view>
 </template>
 

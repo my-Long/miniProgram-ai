@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @LastEditors: Lmy
  * @Date: 2025-12-02 09:47:48
- * @LastEditTime: 2025-12-02 13:36:45
+ * @LastEditTime: 2025-12-02 14:17:04
  * @FilePath: \miniProgram-ai\server\chat.js
  * @Description: 聊天接口
  */
@@ -73,7 +73,7 @@ export const saveMessage = async (messages, res) => {
 
 export const getMessage = async (params, res) => {
   const { page, pageSize } = params;
-  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const data = JSON.parse(fs.readFileSync(filePath, "utf8")).reverse();
   const total = data.length;
 
   const startIndex = (page - 1) * pageSize;

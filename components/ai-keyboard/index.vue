@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-12-02 10:51:45
+ * @LastEditTime: 2025-12-02 13:59:58
  * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
  * @Description: 键盘
 -->
@@ -15,9 +15,10 @@ const props = defineProps({
   },
 });
 const inputValue = ref("");
-const emit = defineEmits(["send"]);
+const emit = defineEmits(["send", "stop"]);
 const sendMessage = () => {
   if (props.isReplying) {
+    emit("stop");
     return;
   }
   if (!inputValue.value.trim()) {
@@ -58,7 +59,7 @@ const sendMessage = () => {
     height: 90rpx;
     padding: 0 10rpx 0 16rpx;
     border-radius: 8rpx;
-    border: 1px solid #778EE9;
+    border: 1px solid #778ee9;
     color: #fff;
     :deep(input) {
       width: 600rpx;

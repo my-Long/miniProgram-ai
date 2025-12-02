@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 20:27:30
+ * @LastEditTime: 2025-12-02 14:36:33
  * @FilePath: \miniProgram-ai\components\ai-sys-text\index.vue
  * @Description: 系统文本
 -->
@@ -11,6 +11,7 @@ import { ref, watch, onBeforeUnmount } from "vue";
 import { marked } from "marked";
 import mpHtml from "mp-html/dist/uni-app/components/mp-html/mp-html.vue";
 import { completeMarkdown } from "@/utils/completeMarkdown";
+import { emit } from "process";
 
 const props = defineProps({
   text: {
@@ -20,6 +21,10 @@ const props = defineProps({
   isReceiving: {
     type: Boolean,
     default: false, // 是否正在接收中（需要打字效果）
+  },
+  isStop: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -31,11 +36,18 @@ let timer = null;
 const typingIndex = ref(0);
 const needTypingEffect = ref(false); // 标记是否需要打字效果
 
+const emits = defineEmits("stopSuccess");
 const typingText = (text) => {
   if (!text) return;
+  if (props.isStop) return;
+
   clearTimeout(timer);
   // 继续从当前位置打字
   const step = () => {
+    if (props.isStop) {
+      emits("stopSuccess", content.value);
+      return;
+    }
     isReplying.value = true;
     if (typingIndex.value < text.length) {
       content.value = text.slice(0, ++typingIndex.value);

@@ -1,9 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import { chatStream } from "./chat.js";
+
+dotenv.config({ path: ".env" });
 
 const app = express();
-const PORT = 3005;
+const PORT = process.env.PORT;
 
 // 中间件配置
 app.use(cors()); // 允许跨域请求
@@ -178,6 +182,18 @@ app.post("/api/chat", (req, res) => {
       i++;
     }, 100);
   }, 1000);
+});
+
+app.post("/api/chat/stream", async (req, res) => {
+  try {
+    const { messages } = req.body;
+    if (!messages) {
+      return res.status(400).json({ error: "message参数必填" });
+    }
+    await chatStream(messages, res);
+  } catch (error) {
+    console.error("API错误:", error);
+  }
 });
 
 // 404 处理

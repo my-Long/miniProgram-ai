@@ -11,7 +11,7 @@ import { ref, computed } from "vue";
 
 export const useSystemStore = defineStore("system", () => {
   // 状态 (state)
-  const baseUrl = ref("http://localhost:3005");
+  const baseUrl = ref("http://localhost:8080");
   const apiUrl = computed(() => `${baseUrl.value}/api`);
 
   const system = ref({});

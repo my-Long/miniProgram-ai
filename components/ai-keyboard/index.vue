@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-11-27 11:38:44
+ * @LastEditTime: 2025-12-02 10:51:45
  * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
  * @Description: 键盘
 -->
@@ -58,8 +58,11 @@ const sendMessage = () => {
     height: 90rpx;
     padding: 0 10rpx 0 16rpx;
     border-radius: 8rpx;
-    border: 1px solid #71d5f9;
-    color: #ff45ca;
+    border: 1px solid #778EE9;
+    color: #fff;
+    :deep(input) {
+      width: 600rpx;
+    }
     .ai-keyboard__input-send {
       display: flex;
       align-items: center;

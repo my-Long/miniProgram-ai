@@ -13,7 +13,7 @@ const props = defineProps({
   },
 });
 const chatMessage = ref("");
-const currentReceivingId = ref(null); // 记录当前正在接收的 AI 消息 ID
+const currentReceivingId = ref(null); // 记录当前正在接收的 assistant 消息 ID
 
 const chatList = ref([]); // 聊天列表
 
@@ -34,14 +34,14 @@ const addMessage = (messageItem) => {
 };
 
 const onHandleChunk = (chunk) => {
-  const { delta, role = "ai" } = chunk; // 设置默认 role 为 "ai"
-  if (typeof delta === "string" && !delta?.trim()) return;
+  const { content, role = "assistant" } = chunk; // 设置默认 role 为 "assistant"
+  if (typeof content === "string" && !content?.trim()) return;
   const last = chatList.value[0];
   if (last && last.role === role) {
-    last.delta += delta;
+    last.content += content;
   } else {
     chatList.value.unshift({
-      delta,
+      content,
       role,
     });
   }
@@ -54,20 +54,20 @@ const onFetch = () => {
   const messageId = Date.now();
   currentReceivingId.value = messageId;
 
-  // 先创建一个空的 AI 消息占位
+  // 先创建一个空的 assistant 消息占位
   const aiMessage = {
     id: messageId,
-    role: "ai",
-    delta: "",
+    role: "assistant",
+    content: "",
   };
   addMessage(aiMessage);
 
   const requestTask = wx.request({
-    url: `${apiUrl}/chat`,
+    url: `${apiUrl}/chat/stream`,
     method: "POST",
     enableChunked: true, // 启用分块传输
     data: {
-      message: chatMessage.value,
+      messages: { role: "user", content: chatMessage.value },
     },
     success: (res) => {
       console.log("✅ 请求完成", res);
@@ -107,7 +107,7 @@ const sendMessage = (message) => {
   const obj = {
     id: Date.now(),
     role: "user",
-    delta: message,
+    content: message,
   };
   addMessage(obj);
   onFetch();
@@ -166,7 +166,6 @@ const onScrollToLower = () => {
 };
 
 const slots = useSlots();
-console.log("slots:", slots);
 defineExpose({
   getMessageList,
 });
@@ -197,13 +196,16 @@ defineExpose({
             class="chat-item"
             v-for="(item, index) in chatList"
             :key="item.id"
-            :class="{ user: item.role === 'user', ai: item.role === 'sys' }"
+            :class="{
+              user: item.role === 'user',
+              assistant: item.role === 'assistant',
+            }"
           >
-            <ai-user-text v-if="item.role === 'user'" :text="item.delta" />
+            <ai-user-text v-if="item.role === 'user'" :text="item.content" />
             <ai-sys-text
-              v-if="item.role === 'ai'"
+              v-if="item.role === 'assistant'"
               v-model:is-replying="isReplying"
-              :text="item.delta"
+              :text="item.content"
               :is-receiving="item.id === currentReceivingId"
             />
           </view>
@@ -237,7 +239,7 @@ defineExpose({
       display: flex;
       justify-content: flex-end;
     }
-    &.ai {
+    &.assistant {
       display: flex;
       justify-content: flex-start;
     }

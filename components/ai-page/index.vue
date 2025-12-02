@@ -171,7 +171,6 @@ const onStop = () => {
 };
 const onStopSuccess = (text) => {
   const messages = { role: "assistant", content: text };
-  console.log(messages);
   saveMessage(messages);
 };
 

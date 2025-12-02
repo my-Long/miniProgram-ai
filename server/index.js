@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { chatStream } from "./chat.js";
+import { chatStream, saveMessage, getMessage } from "./chat.js";
 
 dotenv.config({ path: ".env" });
 
@@ -150,8 +150,6 @@ app.post("/api/chat", (req, res) => {
   ];
   const { message, userId } = req.body;
 
-  console.log("message", message);
-
   if (!message) {
     return res.json({
       code: 400,
@@ -184,6 +182,7 @@ app.post("/api/chat", (req, res) => {
   }, 1000);
 });
 
+// 流式聊天
 app.post("/api/chat/stream", async (req, res) => {
   try {
     const { messages } = req.body;
@@ -191,6 +190,32 @@ app.post("/api/chat/stream", async (req, res) => {
       return res.status(400).json({ error: "message参数必填" });
     }
     await chatStream(messages, res);
+  } catch (error) {
+    console.error("API错误:", error);
+  }
+});
+
+// 保存数据
+app.post("/api/chat/saveMessage", async (req, res) => {
+  try {
+    const { messages } = req.body;
+    if (!messages) {
+      return res.status(400).json({ error: "message参数必填" });
+    }
+    await saveMessage(messages, res);
+  } catch (error) {
+    console.error("API错误:", error);
+  }
+});
+
+// 获取数据
+app.post("/api/chat/getMessage", async (req, res) => {
+  try {
+    const { userId, page, pageSize } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: "userId参数必填" });
+    }
+    await getMessage({ userId, page, pageSize }, res);
   } catch (error) {
     console.error("API错误:", error);
   }

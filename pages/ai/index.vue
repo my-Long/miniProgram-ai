@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @LastEditors: Lmy
  * @Date: 2025-11-27 19:50:31
- * @LastEditTime: 2025-11-28 14:42:29
+ * @LastEditTime: 2025-12-02 13:28:39
  * @FilePath: \miniProgram-ai\pages\ai\index.vue
  * @Description: ai 聊天页面
 -->

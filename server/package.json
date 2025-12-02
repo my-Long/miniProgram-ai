@@ -1,6 +1,7 @@
 {
   "name": "ai-demo-server",
   "version": "1.0.0",
+  "type": "module",
   "description": "AI Demo 小程序后端服务",
   "main": "index.js",
   "scripts": {

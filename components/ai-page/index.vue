@@ -80,7 +80,7 @@ const onFetch = () => {
       // 请求结束后，清除当前接收状态
       // 但打字机效果会在组件内部继续完成
       currentReceivingId.value = null;
-      saveMessage("chatMessages", chatList.value);
+      saveMessage(chatList.value[0]);
     },
   });
 
@@ -110,6 +110,7 @@ const sendMessage = (message) => {
     content: message,
   };
   addMessage(obj);
+  saveMessage(obj);
   onFetch();
 };
 
@@ -131,23 +132,25 @@ const getMessageList = async (isLoadMore = false) => {
       pagination.value.page = 1;
     }
 
-    const result = await getMessage("chatMessages", {
+    const result = await getMessage({
       page: pagination.value.page,
       pageSize: pagination.value.pageSize,
+      userId: "xx123",
     });
 
     if (result.code === 200) {
       // 更新分页信息
       pagination.value.total = result.data.total;
       pagination.value.hasMore = result.data.hasMore;
+      const list = result.data.list.reverse();
 
       if (isLoadMore) {
         // 加载更多：追加到列表末尾
-        chatList.value.push(...result.data.list);
+        chatList.value.push(...list);
         console.log("加载更多成功，当前页:", pagination.value.page);
       } else {
         // 初次加载：替换列表
-        chatList.value = result.data.list;
+        chatList.value = list;
       }
     }
   } catch (error) {

@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:38:19
  * @LastEditors: Lmy
- * @LastEditTime: 2025-12-02 14:36:33
+ * @LastEditTime: 2025-12-02 15:06:37
  * @FilePath: \miniProgram-ai\components\ai-sys-text\index.vue
  * @Description: 系统文本
 -->
@@ -11,7 +11,6 @@ import { ref, watch, onBeforeUnmount } from "vue";
 import { marked } from "marked";
 import mpHtml from "mp-html/dist/uni-app/components/mp-html/mp-html.vue";
 import { completeMarkdown } from "@/utils/completeMarkdown";
-import { emit } from "process";
 
 const props = defineProps({
   text: {
@@ -54,11 +53,14 @@ const typingText = (text) => {
       // 补全未闭合的标记后再渲染
       const completedContent = completeMarkdown(content.value);
       htmlContent.value = marked(completedContent);
-      timer = setTimeout(step, 20);
+      timer = setTimeout(step, 30);
     } else {
       // 打字完成后，标记不再需要打字效果
-      needTypingEffect.value = false;
-      isReplying.value = false;
+      if (!props.isReceiving) {
+        needTypingEffect.value = false;
+        isReplying.value = false;
+        emits("stopSuccess", content.value);
+      }
     }
   };
   step();

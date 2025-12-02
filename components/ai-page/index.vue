@@ -3,7 +3,6 @@ import { ref, reactive, useSlots } from "vue";
 import { useSystemStore } from "@/store/system";
 import { arrayBufferToString, ChunkProcessor } from "@/utils";
 import { saveMessage, getMessage } from "@/api/mockApi";
-import { watch } from "fs";
 
 const { apiUrl } = useSystemStore();
 
@@ -18,7 +17,7 @@ const currentReceivingId = ref(null); // 记录当前正在接收的 assistant �
 
 const chatList = ref([]); // 聊天列表
 
-const isReplying = ref(false); // 是否正在回复(从发送到输出结束)
+const isReplying = ref(false); // 是否正在回复(从发送到打字结束)
 const isWaiting = ref(false); // 是否正在等待(从发送到接收消息)
 
 // 分页相关状态
@@ -167,6 +166,7 @@ const getMessageList = async (isLoadMore = false) => {
 const isStop = ref(false);
 const onStop = () => {
   isStop.value = true;
+  isReplying.value = false;
   requestTask.abort();
 };
 const onStopSuccess = (text) => {

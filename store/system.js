@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @Date: 2025-11-15 15:28:16
  * @LastEditors: Lmy
- * @LastEditTime: 2025-12-03 14:30:42
+ * @LastEditTime: 2025-12-03 14:58:41
  * @FilePath: \miniProgram-ai\store\system.js
  * @Description: 系统配置 Store（组合式）
  */
@@ -16,10 +16,10 @@ export const useSystemStore = defineStore("system", () => {
 
   const system = ref({});
   const setSystem = async () => {
-    const res = await uni.getSystemInfo();
-    system.value = res;
+    const windowInfo = uni.getWindowInfo();
     const capsuleInfo = uni.getMenuButtonBoundingClientRect();
-    system.value.capsuleInfo = capsuleInfo;
+
+    system.value = { capsuleInfo, ...windowInfo };
   };
 
   return {

@@ -2,12 +2,12 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-12-02 17:38:06
+ * @LastEditTime: 2025-12-03 15:56:38
  * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
  * @Description: 键盘
 -->
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 const props = defineProps({
   isReplying: {
     type: Boolean,
@@ -40,9 +40,18 @@ watch(
     }
   }
 );
+const keyboardHeight = ref("");
+const onKeyboardheightchange = (e) => {
+  const height = e.detail.height ?? 0;
+  if (height) {
+    keyboardHeight.value = `calc(${height}px - env(safe-area-inset-bottom))`;
+  } else {
+    keyboardHeight.value = "0px";
+  }
+};
 </script>
 <template>
-  <view class="ai-keyboard">
+  <view class="ai-keyboard" :style="{ 'padding-bottom': `${keyboardHeight}` }">
     <view class="ai-keyboard__input">
       <input
         type="text"
@@ -50,6 +59,8 @@ watch(
         placeholder="请输入内容"
         v-model="inputValue"
         @confirm="sendMessage"
+        :adjust-position="false"
+        @keyboardheightchange="onKeyboardheightchange"
         placeholder-style="color: #79A5BE;"
       />
       <view class="ai-keyboard__input-send" @click="sendMessage">

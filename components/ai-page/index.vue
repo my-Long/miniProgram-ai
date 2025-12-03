@@ -75,6 +75,8 @@ const onFetch = () => {
     },
     fail: (err) => {
       console.error("❌ 请求失败", err);
+      isReplying.value = false;
+      currentReceivingId.value = null;
     },
     complete: () => {
       console.log("⭕ 请求结束");
@@ -232,6 +234,11 @@ defineExpose({
     <ai-keyboard :is-replying="isReplying" @send="sendMessage" @stop="onStop" />
   </view>
 </template>
+<style>
+page {
+  overflow: hidden;
+}
+</style>
 
 <style lang="scss" scoped>
 .container {

@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="text-area" @click="handleClick(0)"> AI 聊天 </view>
-    <!-- <view class="text-area" @click="handleClick(1)"> 历史 AI </view> -->
+    <view class="text-area" @click="handleClick(1)"> 历史 AI </view>
   </view>
 </template>
 

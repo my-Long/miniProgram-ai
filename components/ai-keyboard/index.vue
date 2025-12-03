@@ -2,12 +2,12 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-12-02 13:59:58
+ * @LastEditTime: 2025-12-02 17:38:06
  * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
  * @Description: 键盘
 -->
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 const props = defineProps({
   isReplying: {
     type: Boolean,
@@ -31,12 +31,22 @@ const sendMessage = () => {
   emit("send", inputValue.value);
   inputValue.value = "";
 };
+const focus = ref(false);
+watch(
+  () => props.isReplying,
+  (newVal) => {
+    if (!newVal) {
+      focus.value = true;
+    }
+  }
+);
 </script>
 <template>
   <view class="ai-keyboard">
     <view class="ai-keyboard__input">
       <input
         type="text"
+        :focus="focus"
         placeholder="请输入内容"
         v-model="inputValue"
         @confirm="sendMessage"

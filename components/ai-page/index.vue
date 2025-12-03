@@ -148,12 +148,13 @@ const getMessageList = async (isLoadMore = false) => {
 
       if (isLoadMore) {
         // 加载更多：追加到列表末尾
-        chatList.value.unshift(...list);
+        chatList.value.push(...list);
         console.log("加载更多成功，当前页:", pagination.value.page);
       } else {
         // 初次加载：替换列表
         chatList.value = list;
       }
+      console.log(chatList.value);
     }
   } catch (error) {
     // 加载失败时回退页码

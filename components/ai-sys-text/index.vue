@@ -35,7 +35,7 @@ let timer = null;
 const typingIndex = ref(0);
 const needTypingEffect = ref(false); // 标记是否需要打字效果
 
-const emits = defineEmits("stopSuccess");
+const emits = defineEmits(["stopSuccess"]);
 const typingText = (text) => {
   if (!text) return;
   if (props.isStop) return;

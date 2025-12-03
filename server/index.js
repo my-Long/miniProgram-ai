@@ -241,8 +241,7 @@ app.use((err, req, res, next) => {
 });
 
 // 启动服务器
-app.listen(PORT, () => {
-  console.log("=================================");
-  console.log(`✓ 服务器启动成功！`);
-  console.log(`✓ 运行地址: http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("===============================");
+  console.log(`✓ 运行地址: 本机IPV4`);
 });

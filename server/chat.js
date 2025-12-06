@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, "data", "messages.json");
 
-const KEY = process.env.GEMINI_API_KEY; // 替换为你的有效Key
+const KEY = process.env.APIKEY; // 替换为你的有效Key
 const URL = process.env.URL;
 
 export const chatStream = async (messages, res) => {

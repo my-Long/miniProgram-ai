@@ -2,7 +2,7 @@
  * @Author: Lmy
  * @LastEditors: Lmy
  * @Date: 2025-12-02 09:47:48
- * @LastEditTime: 2025-12-06 17:53:28
+ * @LastEditTime: 2025-12-06 18:01:02
  * @FilePath: /ai-demo/server/chat.js
  * @Description: 聊天接口
  */
@@ -45,7 +45,7 @@ export const chatStream = async (messages, res) => {
   });
   rl.on("line", (line) => {
     const isStop = getSendStatus();
-    if (isStop) ;
+    if (isStop) return;
     line = line.trim();
     if (line.startsWith("data:")) {
       const jsonStr = line.replace(/^data:\s*/, "");

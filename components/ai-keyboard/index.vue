@@ -2,8 +2,8 @@
  * @Author: Lmy
  * @Date: 2025-11-15 16:52:03
  * @LastEditors: Lmy
- * @LastEditTime: 2025-12-03 15:56:38
- * @FilePath: \miniProgram-ai\components\ai-keyboard\index.vue
+ * @LastEditTime: 2025-12-06 18:10:43
+ * @FilePath: /ai-demo/components/ai-keyboard/index.vue
  * @Description: 键盘
 -->
 <script setup>
@@ -35,6 +35,7 @@ const focus = ref(false);
 watch(
   () => props.isReplying,
   (newVal) => {
+    console.log("new", newVal);
     if (!newVal) {
       focus.value = true;
     }

@@ -80,9 +80,8 @@ const onFetch = () => {
     },
     complete: () => {
       console.log("⭕ 请求结束");
-      // 请求结束后，清除当前接收状态
-      // 但打字机效果会在组件内部继续完成
       currentReceivingId.value = null;
+      isReplying.value = false;
     },
   });
 
@@ -169,7 +168,6 @@ const getMessageList = async (isLoadMore = false) => {
 const isStop = ref(false);
 const onStop = () => {
   isStop.value = true;
-  isReplying.value = false;
   requestTask.abort();
 };
 const onStopSuccess = (text) => {

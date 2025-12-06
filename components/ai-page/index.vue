@@ -52,6 +52,7 @@ const processor = ref(new ChunkProcessor(onHandleChunk));
 let requestTask = reactive(null);
 const onFetch = () => {
   // 创建一个唯一 ID 用于标识这次对话
+  isStop.value = false;
   const messageId = Date.now();
   currentReceivingId.value = messageId;
 

@@ -2,8 +2,8 @@
  * @Author: Lmy
  * @LastEditors: Lmy
  * @Date: 2025-12-02 09:47:48
- * @LastEditTime: 2025-12-02 14:17:04
- * @FilePath: \miniProgram-ai\server\chat.js
+ * @LastEditTime: 2025-12-06 17:53:28
+ * @FilePath: /ai-demo/server/chat.js
  * @Description: 聊天接口
  */
 import fetch from "node-fetch";
@@ -16,13 +16,14 @@ dotenv.config({ path: ".env" });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, "data", "messages.json");
+const messagePath = path.join(__dirname, "data", "messages.json");
+const variablePath = path.join(__dirname, "data", "variable.json");
 
 const KEY = process.env.APIKEY; // 替换为你的有效Key
 const URL = process.env.URL;
 
 export const chatStream = async (messages, res) => {
-  console.log(messages);
+  setStatus(false);
   const body = {
     model: "lite", // 示例，可换 spark-v3、spark-max、deepseek-r1 等
     user: "",
@@ -43,6 +44,8 @@ export const chatStream = async (messages, res) => {
     crlfDelay: Infinity,
   });
   rl.on("line", (line) => {
+    const isStop = getSendStatus();
+    if (isStop) ;
     line = line.trim();
     if (line.startsWith("data:")) {
       const jsonStr = line.replace(/^data:\s*/, "");
@@ -65,19 +68,34 @@ export const chatStream = async (messages, res) => {
 };
 
 export const saveMessage = async (messages, res) => {
-  const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  const data = JSON.parse(fs.readFileSync(messagePath, "utf8"));
   data.push({ ...messages });
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  fs.writeFileSync(messagePath, JSON.stringify(data, null, 2));
   res.json({ success: true });
 };
 
 export const getMessage = async (params, res) => {
   const { page, pageSize } = params;
-  const data = JSON.parse(fs.readFileSync(filePath, "utf8")).reverse();
+  const data = JSON.parse(fs.readFileSync(messagePath, "utf8")).reverse();
   const total = data.length;
 
   const startIndex = (page - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const list = data.slice(startIndex, endIndex);
   res.json({ list, total, hasMore: endIndex < total });
+};
+
+export const getSendStatus = () => {
+  const data = JSON.parse(fs.readFileSync(variablePath, "utf8"));
+  return data.isStop;
+};
+export const changeSendStatus = async (params, res) => {
+  setStatus(params.status);
+  res.json({ success: true });
+};
+
+const setStatus = (status) => {
+  const data = JSON.parse(fs.readFileSync(variablePath, "utf8"));
+  data.isStop = status;
+  fs.writeFileSync(variablePath, JSON.stringify(data, null, 2), "utf8");
 };

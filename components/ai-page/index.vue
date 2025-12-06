@@ -2,7 +2,7 @@
 import { ref, reactive, useSlots } from "vue";
 import { useSystemStore } from "@/store/system";
 import { arrayBufferToString, ChunkProcessor } from "@/utils";
-import { saveMessage, getMessage } from "@/api/mockApi";
+import { saveMessage, getMessage, stopReply } from "@/api/mockApi";
 
 const { apiUrl } = useSystemStore();
 
@@ -83,6 +83,7 @@ const onFetch = () => {
       console.log("⭕ 请求结束");
       currentReceivingId.value = null;
       isReplying.value = false;
+      isWaiting.value = false;
     },
   });
 
@@ -170,6 +171,7 @@ const isStop = ref(false);
 const onStop = () => {
   isStop.value = true;
   requestTask.abort();
+  stopReply();
 };
 const onStopSuccess = (text) => {
   const messages = { role: "assistant", content: text };

@@ -3,7 +3,12 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import os from "os";
-import { chatStream, saveMessage, getMessage } from "./chat.js";
+import {
+  chatStream,
+  saveMessage,
+  getMessage,
+  changeSendStatus,
+} from "./chat.js";
 
 dotenv.config({ path: ".env" });
 
@@ -74,6 +79,14 @@ app.post("/api/chat/getMessage", async (req, res) => {
       return res.status(400).json({ error: "userId参数必填" });
     }
     await getMessage({ userId, page, pageSize }, res);
+  } catch (error) {
+    console.error("API错误:", error);
+  }
+});
+// 打断回复
+app.post("/api/chat/stop", async (req, res) => {
+  try {
+    await changeSendStatus({ status: true }, res);
   } catch (error) {
     console.error("API错误:", error);
   }

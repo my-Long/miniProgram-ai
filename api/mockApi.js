@@ -59,3 +59,20 @@ export const getMessage = (params) => {
     }
   });
 };
+
+export const stopReply = () => {
+  const { apiUrl } = useSystemStore();
+  return new Promise((resolve, reject) => {
+    try {
+      uni.request({
+        url: `${apiUrl}/chat/stop`,
+        method: "POST",
+        success: (res) => {
+          resolve(res.data);
+        },
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
